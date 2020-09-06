@@ -1,0 +1,9 @@
+port: 7070
+auth: https://auth.evarun.ru
+
+jwtsecret:
+
+services:
+  position:
+    host: https://position.evarun.ru
+    timeout: 1000

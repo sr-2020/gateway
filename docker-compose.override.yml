@@ -1,0 +1,8 @@
+version: "3.6"
+
+services:
+  nginx:
+    volumes:
+      - ./docker/nginx/nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./docker/nginx/services:/etc/nginx/services
+      - ./docker/nginx/lua:/etc/nginx/lua
