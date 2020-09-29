@@ -8,12 +8,6 @@ import (
 	"testing"
 )
 
-const (
-	authLogin = "37445"
-	authPassword = "9420"
-	authModelId = 9542
-)
-
 func TestCheck(t *testing.T) {
 	convey.Convey("Go to check auth service", t, func() {
 		cfg := config.LoadConfig()
@@ -50,7 +44,7 @@ func TestLogin(t *testing.T) {
 
 	convey.Convey("Try to login with wrong creds", t, func() {
 		token, statusCode, err := authService.Auth(map[string]string{
-			"login": authLogin,
+			"login": cfg.Login,
 			"password": "wrong-pass",
 		})
 
@@ -61,54 +55,54 @@ func TestLogin(t *testing.T) {
 
 	convey.Convey("Legacy login with valid creds with email", t, func() {
 		token, statusCode, err := authService.Auth(map[string]string{
-			"email":    authLogin,
-			"password": authPassword,
+			"email":    cfg.Login,
+			"password": cfg.Password,
 		})
 
 		convey.So(err, convey.ShouldBeNil)
 		convey.So(statusCode, convey.ShouldEqual, http.StatusOK)
 
-		convey.So(token.Id, convey.ShouldEqual, authModelId)
+		convey.So(token.Id, convey.ShouldEqual, cfg.ModelId)
 		convey.So(token.ApiKey, convey.ShouldNotEqual, "")
 	})
 
 	convey.Convey("Login with valid creds", t, func() {
 		token, statusCode, err := authService.Auth(map[string]string{
-			"login": authLogin,
-			"password": authPassword,
+			"login": cfg.Login,
+			"password": cfg.Password,
 		})
 
 		convey.So(err, convey.ShouldBeNil)
 		convey.So(statusCode, convey.ShouldEqual, http.StatusOK)
 
-		convey.So(token.Id, convey.ShouldEqual, authModelId)
+		convey.So(token.Id, convey.ShouldEqual, cfg.ModelId)
 		convey.So(token.ApiKey, convey.ShouldNotEqual, "")
 
 		modelId, err := authService.ModelId(token)
 		convey.So(err, convey.ShouldBeNil)
-		convey.So(modelId, convey.ShouldEqual, authModelId)
+		convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 
 		oldToken := token
 		convey.Convey("One more time login", func() {
 			token, statusCode, err := authService.Auth(map[string]string{
-				"login":    authLogin,
-				"password": authPassword,
+				"login": cfg.Login,
+				"password": cfg.Password,
 			})
 
 			convey.So(err, convey.ShouldBeNil)
 			convey.So(statusCode, convey.ShouldEqual, http.StatusOK)
 
-			convey.So(token.Id, convey.ShouldEqual, authModelId)
+			convey.So(token.Id, convey.ShouldEqual, cfg.ModelId)
 			convey.So(token.ApiKey, convey.ShouldNotEqual, "")
 
 			modelId, err := authService.ModelId(token)
 			convey.So(err, convey.ShouldBeNil)
-			convey.So(modelId, convey.ShouldEqual, authModelId)
+			convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 
 			convey.Convey("Check auth with preview token", func() {
 				modelId, err := authService.ModelId(oldToken)
 				convey.So(err, convey.ShouldBeNil)
-				convey.So(modelId, convey.ShouldEqual, authModelId)
+				convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 			})
 		})
 	})

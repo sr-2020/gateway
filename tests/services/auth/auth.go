@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/sr-2020/gateway/tests/config"
 	"github.com/sr-2020/gateway/tests/domain"
 	"io/ioutil"
 	"net/http"
@@ -40,6 +41,17 @@ func (a *ServiceImpl) Auth(data map[string]string) (domain.Token, int, error) {
 	}
 
 	return token, resp.StatusCode, nil
+}
+
+func (a *ServiceImpl) AuthTest() (domain.Token, error) {
+	cfg := config.LoadConfig()
+
+	token, _, err := a.Auth(map[string]string{
+		"login": cfg.Login,
+		"password": cfg.Password,
+	})
+
+	return token, err
 }
 
 func (a *ServiceImpl) ModelId(token domain.Token) (int, error) {

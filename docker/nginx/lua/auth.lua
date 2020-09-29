@@ -103,6 +103,11 @@ function authLogin()
 
 end
 
+function authLogout()
+    ngx.header['Set-Cookie'] = 'Authorization=; Path=/; Domain=evarun.ru;'
+    return
+end
+
 function config(key)
     if ngx.req.get_method() == "GET" or ngx.req.get_method() == "POST" then
 
@@ -111,7 +116,8 @@ function config(key)
 
         red:set_timeout(1000)
 
-        local ok, err = red:connect("redis", 6379)
+        local redisHost = os.getenv("REDIS_HOST")
+        local ok, err = red:connect(redisHost, 6379)
         if err ~= nil then
             ngx.status = 500
             ngx.print(err)

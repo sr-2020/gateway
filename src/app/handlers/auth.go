@@ -15,13 +15,26 @@ type Auth struct {
 }
 
 func (a Auth) Handler(c echo.Context) error {
-	auth := strings.Split(c.Request().Header.Get("Authorization"), " ")
-	if len(auth) < 2 {
-		return c.JSON(http.StatusUnauthorized, map[string]string{
-			"error": "Invalid token",
-		})
+	token := ""
+	authorizationHeader := c.Request().Header.Get("Authorization")
+	if authorizationHeader != "" {
+		auth := strings.Split(c.Request().Header.Get("Authorization"), " ")
+		if len(auth) < 2 {
+			return c.JSON(http.StatusUnauthorized, map[string]string{
+				"error": "Invalid token header",
+			})
+		}
+		token = auth[1]
+	} else {
+		tokenCookie, err := c.Request().Cookie("Authorization")
+		if err != nil {
+			return c.JSON(http.StatusUnauthorized, map[string]string{
+				"error": "Invalid token cookie:" + err.Error(),
+			})
+		}
+
+		token = tokenCookie.Value
 	}
-	token := auth[1]
 
 	request := usecases.JwtRequest{Token: token}
 	response, err := a.UseCase.Execute(request)

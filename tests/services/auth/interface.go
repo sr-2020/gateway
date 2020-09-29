@@ -7,5 +7,6 @@ import (
 type Service interface {
 	Check() bool
 	Auth(map[string]string) (domain.Token, int, error)
+	AuthTest() (domain.Token, error)
 	ModelId(domain.Token) (int, error)
 }
