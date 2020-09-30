@@ -9,12 +9,13 @@ jobs:
   include:
   - stage: build and push docker image
     script:
+      - touch .env
       - export IMAGE_TAG=$(echo "$TRAVIS_COMMIT" | head -c7)
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - make build tag=$IMAGE_TAG
       - make push
-      - make build-test tag=$IMAGE_TAG
-      - make push-test
+      - make build-nginx tag=$IMAGE_TAG
+      - make push-nginx
 
   - stage: deploy production
     install:
@@ -26,12 +27,7 @@ jobs:
       - gcloud auth activate-service-account $SERVICE_ACCOUNT --key-file=${HOME}/service-account-key.json
       - gcloud container clusters get-credentials prod --project $PROJECT --zone $ZONE
       - kubectl config set-context --current --namespace=production
+      - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+      - helm version
     script:
-      - kubectl set image deployment/gateway gateway=sr2020/eva-gateway:$IMAGE_TAG --record
-      - kubectl rollout status deployment/gateway
-      - kubectl set image deployment/convey convey=sr2020/eva-gateway-test:$IMAGE_TAG --record
-      - kubectl rollout status deployment/convey
-
-  - stage: test production
-    script:
-      - make test env=production
+      - helm upgrade gateway2 helm/gateway2/ --wait --set image.gateway.tag=$IMAGE_TAG --set image.nginx.tag=$IMAGE_TAG
