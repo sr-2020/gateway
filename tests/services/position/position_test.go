@@ -13,9 +13,7 @@ func TestCheck(t *testing.T) {
 		cfg := config.LoadConfig()
 		positionService := NewServiceImpl(cfg.Host + "/api/v1", "")
 
-		convey.Convey("Check response", func() {
-			convey.So(positionService.Check(), convey.ShouldEqual, true)
-		})
+		convey.So(positionService.Check(), convey.ShouldEqual, true)
 	})
 }
 
@@ -24,11 +22,9 @@ func TestLocations(t *testing.T) {
 		cfg := config.LoadConfig()
 		positionService := NewServiceImpl(cfg.Host+"/api/v1", "")
 
-		convey.Convey("Check response", func() {
-			_, err := positionService.Locations()
+		_, err := positionService.Locations()
 
-			convey.So(err, convey.ShouldEqual, nil)
-		})
+		convey.So(err, convey.ShouldEqual, nil)
 	})
 }
 

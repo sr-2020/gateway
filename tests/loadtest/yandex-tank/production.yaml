@@ -1,0 +1,20 @@
+tank:
+  enabled: true
+  package: yandextank.plugins.DataUploader
+  token_file: .token
+
+phantom:
+  address: gateway2.evarun.ru:443
+  ssl: true
+  headers:
+  - "[Host: gateway2.evarun.ru]"
+  uris:
+    - /api/v1/config/test
+  load_profile:
+    load_type: rps
+    schedule: const(100, 10s)
+  instances: 50
+console:
+  enabled: true
+telegraf:
+  enabled: false

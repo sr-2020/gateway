@@ -11,8 +11,6 @@ func TestCheck(t *testing.T) {
 		cfg := config.LoadConfig()
 		modelEngineService := NewServiceImpl(cfg.Host + "/api/v1")
 
-		convey.Convey("Check response", func() {
-			convey.So(modelEngineService.Check(), convey.ShouldEqual, true)
-		})
+		convey.So(modelEngineService.Check(), convey.ShouldEqual, true)
 	})
 }

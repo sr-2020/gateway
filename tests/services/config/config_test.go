@@ -27,12 +27,10 @@ func TestWriteAndRead(t *testing.T) {
 		convey.Convey("Check response for write", func() {
 			convey.So(configService.Write("testkey", jsonValue), convey.ShouldEqual, nil)
 
-			convey.Convey("Check response for read", func() {
-				content, err := configService.Read("testkey")
+			content, err := configService.Read("testkey")
 
-				convey.So(content, convey.ShouldEqual, jsonValue)
-				convey.So(err, convey.ShouldEqual, nil)
-			})
+			convey.So(content, convey.ShouldEqual, jsonValue)
+			convey.So(err, convey.ShouldEqual, nil)
 		})
 	})
 }
@@ -43,9 +41,7 @@ func TestWriteInvalidJson(t *testing.T) {
 		configService := NewServiceImpl(cfg.Host + "/api/v1")
 
 		jsonValue := `rawdata`
-		convey.Convey("Check response for write", func() {
-			convey.So(configService.Write("testkey", jsonValue), convey.ShouldEqual, domain.ErrBadRequest)
-		})
+		convey.So(configService.Write("testkey", jsonValue), convey.ShouldEqual, domain.ErrBadRequest)
 	})
 }
 
@@ -54,11 +50,9 @@ func TestReadNotFound(t *testing.T) {
 		cfg := config.LoadConfig()
 		configService := NewServiceImpl(cfg.Host + "/api/v1")
 
-		convey.Convey("Check response for not found read", func() {
-			content, err := configService.Read("testkey404")
+		content, err := configService.Read("testkey404")
 
-			convey.So(content, convey.ShouldEqual, "")
-			convey.So(err, convey.ShouldEqual, domain.ErrNotFound)
-		})
+		convey.So(content, convey.ShouldEqual, "")
+		convey.So(err, convey.ShouldEqual, domain.ErrNotFound)
 	})
 }

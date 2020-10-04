@@ -22,20 +22,26 @@ func TestBalance(t *testing.T) {
 	cfg := config.LoadConfig()
 	authService := auth.NewServiceImpl(cfg.Host + "/api/v1")
 
+	convey.Convey("Try to check balance for unauthorized user", t, func() {
+		billingService := NewServiceImpl(cfg.Host+"/api/v1", "")
+
+		balanceResponse, err := billingService.Balance()
+
+		convey.So(err, convey.ShouldEqual, nil)
+		convey.So(balanceResponse.Data.CharacterId, convey.ShouldEqual, 0)
+	})
+
 	convey.Convey("Login with valid creds", t, func() {
 		token, err := authService.AuthTest()
 		convey.So(err, convey.ShouldBeNil)
 
-		convey.Convey("Go to check billing service", func() {
-			cfg := config.LoadConfig()
+		convey.Convey("Check balance for auth user", func() {
 			billingService := NewServiceImpl(cfg.Host+"/api/v1", token.ApiKey)
 
-			convey.Convey("Check response", func() {
-				balanceResponse, err := billingService.Balance()
+			balanceResponse, err := billingService.Balance()
 
-				convey.So(err, convey.ShouldEqual, nil)
-				convey.So(balanceResponse.Data.CharacterId, convey.ShouldEqual, cfg.ModelId)
-			})
+			convey.So(err, convey.ShouldEqual, nil)
+			convey.So(balanceResponse.Data.CharacterId, convey.ShouldEqual, cfg.ModelId)
 		})
 	})
 }

@@ -1,5 +1,6 @@
-tests/loadtest/.token
-tests/loadtest/logs/
+tests/loadtest/yandex-tank/.token
+tests/loadtest/yandex-tank/logs/
+tests/loadtest/yandex-tank/*.log
 tests/tests/_output/*
 tests/tests/_support/_generated/*
 src/.env

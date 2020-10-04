@@ -53,15 +53,13 @@ func TestSentEventRevive(t *testing.T) {
 		convey.Convey("Sent revive", func() {
 			modelsManagerService := NewServiceImpl(cfg.Host+"/api/v1", token.ApiKey)
 
-			convey.Convey("Check response", func() {
-				event := domain.Event{
-					EventType: "revive",
-				}
-				modelsManagerResponse, err := modelsManagerService.SentEvent(event)
+			event := domain.Event{
+				EventType: "revive",
+			}
+			modelsManagerResponse, err := modelsManagerService.SentEvent(event)
 
-				convey.So(err, convey.ShouldEqual, nil)
-				convey.So(modelsManagerResponse.BaseModel.ModelId, convey.ShouldEqual, strconv.Itoa(cfg.ModelId))
-			})
+			convey.So(err, convey.ShouldEqual, nil)
+			convey.So(modelsManagerResponse.BaseModel.ModelId, convey.ShouldEqual, strconv.Itoa(cfg.ModelId))
 		})
 	})
 }

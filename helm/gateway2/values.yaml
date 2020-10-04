@@ -6,7 +6,7 @@ replicaCount: 1
 
 app:
   services:
-    app: "http://localhost:8080"
+    app: "http://127.0.0.1:8080"
     auth: "http://auth.production.svc.cluster.local"
     position: "http://position.production.svc.cluster.local"
     push: "http://push.production.svc.cluster.local"

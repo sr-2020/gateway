@@ -46,6 +46,9 @@ function billingAccountInfoMiddleware()
     local res = auth()
 
     ngx.req.set_uri("/api/billing/info/getbalance")
+    if res.header["X-User-Id"] == nil then
+        res.header["X-User-Id"] = 0
+    end
     ngx.req.set_uri_args("characterId=" .. res.header["X-User-Id"])
 
     return res
@@ -55,6 +58,9 @@ function billingGetTransfersMiddleware()
     local res = auth()
 
     ngx.req.set_uri("/api/billing/info/gettransfers")
+    if res.header["X-User-Id"] == nil then
+        res.header["X-User-Id"] = 0
+    end
     ngx.req.set_uri_args("characterId=" .. res.header["X-User-Id"])
 
     return res
