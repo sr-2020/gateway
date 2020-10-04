@@ -43,6 +43,11 @@ func (a *ServiceImpl) CharacterModel() (domain.CharacterModelResponse, error) {
 		return characterModelResponse, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusUnauthorized {
+		return characterModelResponse, domain.ErrUnauthorized
+	}
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return characterModelResponse, err
@@ -84,6 +89,11 @@ func (a *ServiceImpl) SentEvent(event domain.Event) (domain.CharacterModelRespon
 		return characterModelResponse, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusUnauthorized {
+		return characterModelResponse, domain.ErrUnauthorized
+	}
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return characterModelResponse, err

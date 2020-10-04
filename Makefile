@@ -53,7 +53,13 @@ install-docker-compose:
 	docker-compose -v
 
 test:
-	cd tests && go clean -testcache && go test -v .
+	cd tests && go clean -testcache && go test -v ./...
+
+test-services:
+	cd tests && go clean -testcache && go test -v ./services/...
+
+test-main:
+	cd tests && go clean -testcache && go test -v
 
 convey:
 	cd tests && goconvey -port 8448

@@ -14,15 +14,21 @@ func TestCheck(t *testing.T) {
 		cfg := config.LoadConfig()
 		modelsManagerService := NewServiceImpl(cfg.Host + "/api/v1", "")
 
-		convey.Convey("Check response", func() {
-			convey.So(modelsManagerService.Check(), convey.ShouldEqual, true)
-		})
+		convey.So(modelsManagerService.Check(), convey.ShouldEqual, true)
 	})
 }
 
 func TestCharacterModel(t *testing.T) {
 	cfg := config.LoadConfig()
 	authService := auth.NewServiceImpl(cfg.Host + "/api/v1")
+
+	convey.Convey("Try to read character model for unauthorized user", t, func() {
+		modelsManagerService := NewServiceImpl(cfg.Host+"/api/v1", "")
+
+		_, err := modelsManagerService.CharacterModel()
+
+		convey.So(err, convey.ShouldEqual, domain.ErrUnauthorized)
+	})
 
 	convey.Convey("Login with valid creds", t, func() {
 		token, err := authService.AuthTest()
@@ -32,12 +38,10 @@ func TestCharacterModel(t *testing.T) {
 			cfg := config.LoadConfig()
 			modelsManagerService := NewServiceImpl(cfg.Host+"/api/v1", token.ApiKey)
 
-			convey.Convey("Check response", func() {
-				modelsManagerResponse, err := modelsManagerService.CharacterModel()
+			modelsManagerResponse, err := modelsManagerService.CharacterModel()
 
-				convey.So(err, convey.ShouldEqual, nil)
-				convey.So(modelsManagerResponse.BaseModel.ModelId, convey.ShouldEqual, strconv.Itoa(cfg.ModelId))
-			})
+			convey.So(err, convey.ShouldEqual, nil)
+			convey.So(modelsManagerResponse.BaseModel.ModelId, convey.ShouldEqual, strconv.Itoa(cfg.ModelId))
 		})
 	})
 }
@@ -45,6 +49,17 @@ func TestCharacterModel(t *testing.T) {
 func TestSentEventRevive(t *testing.T) {
 	cfg := config.LoadConfig()
 	authService := auth.NewServiceImpl(cfg.Host + "/api/v1")
+
+	convey.Convey("Try to sent revive for unauthorized user", t, func() {
+		modelsManagerService := NewServiceImpl(cfg.Host+"/api/v1", "")
+
+		event := domain.Event{
+			EventType: "revive",
+		}
+		_, err := modelsManagerService.SentEvent(event)
+
+		convey.So(err, convey.ShouldEqual, domain.ErrUnauthorized)
+	})
 
 	convey.Convey("Login with valid creds", t, func() {
 		token, err := authService.AuthTest()
