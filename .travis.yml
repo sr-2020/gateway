@@ -30,7 +30,7 @@ jobs:
       - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
       - helm version
     script:
-      - helm upgrade gateway2 helm/gateway2/ --wait --set image.gateway.tag=$IMAGE_TAG --set image.nginx.tag=$IMAGE_TAG
+      - helm upgrade gateway-new helm/gateway/ --wait --set image.gateway.tag=$IMAGE_TAG --set image.nginx.tag=$IMAGE_TAG
 
   - stage: test production
     install:

@@ -18,6 +18,10 @@ app:
     redis: "redis.production.svc.cluster.local"
 
 image:
+  gatewayOld:
+    repository: sr2020/eva-gateway
+    tag: latest
+    pullPolicy: Always
   gateway:
     repository: sr2020/gateway
     tag: latest
