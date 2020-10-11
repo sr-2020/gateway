@@ -68,13 +68,13 @@ load:
 	docker run -v $(current_dir)/tests/loadtest/yandex-tank:/var/loadtest --net host --entrypoint /usr/local/bin/yandex-tank -it direvius/yandex-tank -c production.yaml
 
 load-wrk:
-	docker run --rm -v $(current_dir)/tests/loadtest/wrk:/data skandyla/wrk -t2 -c20 -d30s -s auth.lua https://gateway2.evarun.ru
+	docker run --rm -v $(current_dir)/tests/loadtest/wrk:/data skandyla/wrk -t2 -c20 -d30s -s auth.lua https://gateway.evarun.ru
 
 load-wrk-config:
-	docker run --rm -v $(current_dir)/tests/loadtest/wrk:/data skandyla/wrk -t2 -c20 -d30s -s config.lua https://gateway2.evarun.ru
+	docker run --rm -v $(current_dir)/tests/loadtest/wrk:/data skandyla/wrk -t2 -c20 -d30s -s config.lua https://gateway.evarun.ru
 
 load-wrk-billing:
-	docker run --rm -v $(current_dir)/tests/loadtest/wrk:/data skandyla/wrk -t2 -c10 -d10s -s billing.lua https://gateway2.evarun.ru
+	docker run --rm -v $(current_dir)/tests/loadtest/wrk:/data skandyla/wrk -t2 -c10 -d10s -s billing.lua https://gateway.evarun.ru
 
 test-dev:
 	make restart
