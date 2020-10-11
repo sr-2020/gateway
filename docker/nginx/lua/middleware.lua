@@ -31,6 +31,7 @@ function modelsManagerMiddleware()
         end
 
         reqBody.data["location"] = resBody.position
+        cjson.encode_empty_table_as_object(false)
 
         ngx.log(ngx.INFO, cjson.encode(reqBody))
 
