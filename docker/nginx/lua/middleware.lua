@@ -43,6 +43,20 @@ function modelsManagerMiddleware()
     return res
 end
 
+function modelsManagerFeaturesMiddleware()
+    local res = auth()
+
+    if res.status ~= 200 then
+        ngx.status = 401
+        ngx.say('Unauthorized')
+        return ngx.exit(401)
+    end
+
+    ngx.req.set_uri("/character/available_features/" .. res.header["X-User-Id"])
+
+    return res
+end
+
 function billingAccountInfoMiddleware()
     local res = auth()
 
