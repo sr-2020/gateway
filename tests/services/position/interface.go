@@ -6,4 +6,5 @@ type Service interface {
 	Check() bool
 	Locations() ([]domain.Location, error)
 	AddPosition(beacons []domain.Beacon) (domain.Position, error)
+	ManaLevel() (domain.ManaLevel, error)
 }

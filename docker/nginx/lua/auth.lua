@@ -108,6 +108,28 @@ function authLogout()
     return
 end
 
+function manaLevel()
+    local res = auth("?data=position")
+
+    if res.status ~= 200 then
+        ngx.status = res.status
+        ngx.print(res.Body)
+        return
+    end
+
+    local ok, data = pcall(cjson.decode, res.header["X-User-Data"])
+    if not ok or data.position == nil then
+        ngx.header.content_type = 'application/json'
+        ngx.status = 200
+        ngx.print('{"id":0,"manaLevel":0}')
+        return
+    end
+
+    ngx.header.content_type = 'application/json'
+    ngx.print(cjson.encode(data.position))
+    return
+end
+
 function config(key)
     if ngx.req.get_method() == "GET" or ngx.req.get_method() == "POST" then
 

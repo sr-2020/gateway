@@ -68,3 +68,31 @@ func TestAddPosition(t *testing.T) {
 		})
 	})
 }
+
+func TestManaLevel(t *testing.T) {
+	cfg := config.LoadConfig()
+	authService := auth.NewServiceImpl(cfg.Host + "/api/v1")
+
+	convey.Convey("Try to read mana level for unauthorized", t, func() {
+		cfg := config.LoadConfig()
+		positionService := NewServiceImpl(cfg.Host+"/api/v1", "")
+
+		_, err := positionService.ManaLevel()
+
+		convey.So(err, convey.ShouldEqual, domain.ErrUnauthorized)
+	})
+
+	convey.Convey("Login with valid creds", t, func() {
+		token, err := authService.AuthTest()
+		convey.So(err, convey.ShouldBeNil)
+
+		convey.Convey("Read mana level for current user location", func() {
+			cfg := config.LoadConfig()
+			positionService := NewServiceImpl(cfg.Host+"/api/v1", token.ApiKey)
+
+			_, err := positionService.ManaLevel()
+
+			convey.So(err, convey.ShouldEqual, nil)
+		})
+	})
+}

@@ -94,3 +94,36 @@ func (a *ServiceImpl) AddPosition(beacons []domain.Beacon) (domain.Position, err
 
 	return position, nil
 }
+
+func (a *ServiceImpl) ManaLevel() (domain.ManaLevel, error) {
+	var manaLevel domain.ManaLevel
+
+	client := http.Client{}
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/position/manalevel", a.host), nil)
+	if err != nil {
+		return manaLevel, err
+	}
+
+	req.Header.Set("Authorization", "Bearer " + a.token)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return manaLevel, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusUnauthorized {
+		return manaLevel, domain.ErrUnauthorized
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return manaLevel, err
+	}
+
+	if err := json.Unmarshal(body, &manaLevel); err != nil {
+		return manaLevel, err
+	}
+
+	return manaLevel, nil
+}

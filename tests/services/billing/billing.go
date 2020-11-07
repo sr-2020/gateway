@@ -21,7 +21,7 @@ func (a *ServiceImpl) Check() bool {
 	resp, _ := http.Get(fmt.Sprintf("%s/billing/test/testid", a.host))
 	body, _ := ioutil.ReadAll(resp.Body)
 
-	return string(body) == "9570"
+	return string(body) == "0"
 }
 
 func (a *ServiceImpl) Balance() (domain.BalanceResponse, error) {
