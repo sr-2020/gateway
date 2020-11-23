@@ -8,7 +8,7 @@ import (
 	"testing"
 )
 
-func TestCheck(t *testing.T) {
+func _TestCheck(t *testing.T) {
 	convey.Convey("Check authorization", t, func() {
 		cfg := config.LoadConfig()
 
