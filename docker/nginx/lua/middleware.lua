@@ -98,7 +98,7 @@ function billingTransferMiddleware()
 
         ngx.req.set_method(ngx.HTTP_GET)
         ngx.req.set_uri("/api/billing/transfer/maketransfersinsin")
-        ngx.req.set_uri_args("character1=" .. res.header["X-User-Id"] .. "&character2=" .. reqBody.sin_to .. "&amount=" .. reqBody.amount .. "&comment=" .. reqBody.comment)
+        ngx.req.set_uri_args({character1 = res.header["X-User-Id"], character2 = reqBody.sin_to, amount = reqBody.amount, comment = reqBody.comment})
     end
 
     return res
