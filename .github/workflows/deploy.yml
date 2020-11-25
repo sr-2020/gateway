@@ -21,6 +21,7 @@ jobs:
           name: sr2020/gateway-nginx
           tags: ${{ github.sha }}
           dockerfile: ./docker/Dockerfile
+          workdir: ./docker
           username: sr2020
           password: ${{ secrets.DOCKER_PASSWORD }}
 
