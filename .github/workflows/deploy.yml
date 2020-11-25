@@ -19,8 +19,5 @@ jobs:
         env:
           TEST_CONFIG: ${{secrets.TEST_CONFIG}}
       - run: |
-          echo "JWT_SECRET=" >> .env
-          cat .env
-          kubectl get secret web2 -o jsonpath="{.data.jwtSecret}" | base64 --decode >> .env
           make test-services
           make test-main
