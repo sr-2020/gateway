@@ -1,0 +1,2 @@
+creation_rules:
+  - gcp_kms: projects/imposing-elixir-249711/locations/global/keyRings/helm-key-ring/cryptoKeys/helm-key

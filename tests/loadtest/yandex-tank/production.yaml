@@ -4,16 +4,14 @@ tank:
   token_file: .token
 
 phantom:
-  address: gateway2.evarun.ru:443
+  address: gateway.evarun.ru:443
   ssl: true
-  headers:
-  - "[Host: gateway2.evarun.ru]"
-  uris:
-    - /api/v1/config/test
+  ammo_type: uri
+  ammofile: ./ammo.txt
   load_profile:
     load_type: rps
-    schedule: const(100, 10s)
-  instances: 50
+    schedule: line(1,25,30s) const(25,1m)
+  instances: 100
 console:
   enabled: true
 telegraf:

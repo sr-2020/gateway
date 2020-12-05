@@ -136,29 +136,8 @@ spec:
                 secretKeyRef:
                   name: web2
                   key: jwtSecret
-        - name: gateway-old
-          image: "{{ .Values.image.gatewayOld.repository }}:{{ .Values.image.gatewayOld.tag }}"
-          imagePullPolicy: {{ .Values.image.gatewayOld.pullPolicy }}
-          ports:
-            - containerPort: 8081
-          livenessProbe:
-            httpGet:
-              path: /api/v1/auth/version
-              port: 8081
-          readinessProbe:
-            httpGet:
-              path: /api/v1/auth/version
-              port: 8081
-          env:
-            - name: GATEWAY_PORT
-              value: "8081"
-            - name: AUTH_HOST
+            - name: SECRET
               valueFrom:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-configmap
-                  key: authHost
-            - name: POSITION_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ .Release.Name }}-configmap
-                  key: positionHost
+                  key: secret

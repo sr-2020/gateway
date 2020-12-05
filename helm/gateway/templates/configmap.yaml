@@ -13,3 +13,4 @@ data:
   webHost: {{ .Values.app.services.web | quote }}
   rcWebHost: {{ .Values.app.services.rcWeb | quote }}
   redisHost: {{ .Values.app.services.redis | quote }}
+  secret: {{ .Values.app.services.secret | quote }}
