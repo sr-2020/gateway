@@ -2,6 +2,7 @@ package auth
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/sr-2020/gateway/tests/config"
 	"github.com/sr-2020/gateway/tests/domain"
@@ -36,6 +37,10 @@ func (a *ServiceImpl) Auth(data map[string]string) (domain.Token, int, error) {
 	body, _ := ioutil.ReadAll(resp.Body)
 
 	token := domain.Token{}
+	if resp.StatusCode != http.StatusOK {
+		return token, resp.StatusCode, errors.New("Status Code:" + strconv.Itoa(resp.StatusCode))
+	}
+
 	if err := json.Unmarshal(body, &token); err != nil {
 		return token, resp.StatusCode, err
 	}

@@ -24,7 +24,7 @@ func TestLogin(t *testing.T) {
 	convey.Convey("Try to login with empty creds", t, func() {
 		token, statusCode, err := authService.Auth(map[string]string{})
 
-		convey.So(err, convey.ShouldBeNil)
+		convey.So(err, convey.ShouldBeError)
 		convey.So(statusCode, convey.ShouldEqual, http.StatusBadRequest)
 		convey.So(token, convey.ShouldResemble, domain.Token{})
 	})
@@ -35,7 +35,7 @@ func TestLogin(t *testing.T) {
 			"password": "1234",
 		})
 
-		convey.So(err, convey.ShouldBeNil)
+		convey.So(err, convey.ShouldBeError)
 		convey.So(statusCode, convey.ShouldEqual, http.StatusUnauthorized)
 		convey.So(token, convey.ShouldResemble, domain.Token{})
 	})
@@ -46,7 +46,7 @@ func TestLogin(t *testing.T) {
 			"password": "wrong-pass",
 		})
 
-		convey.So(err, convey.ShouldBeNil)
+		convey.So(err, convey.ShouldBeError)
 		convey.So(statusCode, convey.ShouldEqual, http.StatusUnauthorized)
 		convey.So(token, convey.ShouldResemble, domain.Token{})
 	})

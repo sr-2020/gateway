@@ -8,7 +8,7 @@ type BalanceResponse struct {
 
 type Balance struct {
 	CharacterId       int
-	SIN               *int
+	SIN               string
 	CurrentBalance    float64
 	PersonName        string
 	CurrentScoring    float64
