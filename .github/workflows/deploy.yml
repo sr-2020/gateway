@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
   deploy_rc:
-    if: github.ref == 'refs/heads/deploy'
+    if: github.ref == 'refs/heads/rc'
     runs-on: ubuntu-20.04
     needs: [build]
     steps:
