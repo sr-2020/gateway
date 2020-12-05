@@ -41,6 +41,7 @@ jobs:
           kubectl config set-context --current --namespace=production
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
           helm version
+          helm plugin install https://github.com/zendesk/helm-secrets
           helm secrets upgrade rc-gateway helm/gateway/ --wait \
             -f helm/gateway/values.yaml \
             -f helm/gateway/values/rc/values.yaml \
@@ -84,10 +85,10 @@ jobs:
           kubectl config set-context --current --namespace=production
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
           helm version
+          helm plugin install https://github.com/zendesk/helm-secrets
           helm secrets upgrade gateway-new helm/gateway/ --wait \
             -f helm/gateway/values.yaml \
             -f helm/gateway/values/production/values.yaml \
             -f helm/gateway/values/production/secrets.yaml \
             --set image.gateway.tag=$GITHUB_SHA \
             --set image.nginx.tag=$GITHUB_SHA
-
