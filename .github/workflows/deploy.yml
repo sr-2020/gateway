@@ -91,3 +91,16 @@ jobs:
             -f helm/gateway/values/production/secrets.yaml \
             --set image.gateway.tag=$GITHUB_SHA \
             --set image.nginx.tag=$GITHUB_SHA
+
+  test_production:
+    runs-on: ubuntu-20.04
+    needs: [deploy_production]
+    steps:
+      - uses: actions/checkout@v1
+      - run: 'echo "$TEST_CONFIG" > .env'
+        shell: bash
+        env:
+          TEST_CONFIG: ${{secrets.TEST_CONFIG}}
+      - run: |
+          make test-services
+          make test-main
