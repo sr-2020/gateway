@@ -1,4 +1,4 @@
-FROM golang:1.13 as builder
+FROM golang:1.15.6-alpine as builder
 
 WORKDIR /go/src/github.com/sr2020/gateway
 
@@ -12,7 +12,7 @@ COPY ./src .
 RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/gateway ./cmd
 
 
-FROM alpine:latest
+FROM alpine:3.12.1
 
 WORKDIR /root/
 
