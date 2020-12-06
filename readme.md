@@ -3,7 +3,7 @@
 
 Helm deploy production
 ```
-helm install gateway helm/gateway/ \
+helm secrets upgrade gateway helm/gateway/ \
     -f helm/gateway/values.yaml \
     -f helm/gateway/values/production/values.yaml \
     -f helm/gateway/values/production/secrets.yaml
