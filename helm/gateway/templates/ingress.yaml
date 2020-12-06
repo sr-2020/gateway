@@ -1,0 +1,94 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: gateway-ingress-nginx
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  tls:
+    - hosts:
+        - gateway.evarun.ru
+        - web.evarun.ru
+        - rc-web.evarun.ru
+        - ppa.evarun.ru
+        - push.evarun.ru
+        - model-engine.evarun.ru
+        - models-manager.evarun.ru
+        - position.evarun.ru
+        - billing.evarun.ru
+        - marketplace.evarun.ru
+        - maps-n-magic.evarun.ru
+      secretName: tls-secret3
+  rules:
+    - host: gateway.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: gateway
+              servicePort: http
+    - host: rc-gateway.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: rc-gateway
+              servicePort: http
+    - host: web.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: http
+    - host: rc-web.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: rc-web
+              servicePort: http
+    - host: ppa.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: ppa
+              servicePort: http
+    - host: push.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: push
+              servicePort: http
+    - host: model-engine.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: model-engine
+              servicePort: http
+    - host: models-manager.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: models-manager
+              servicePort: http
+    - host: position.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: position
+              servicePort: http
+    - host: billing.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: billing
+              servicePort: http
+    - host: marketplace.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: marketplace
+              servicePort: http
+    - host: maps-n-magic.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: maps-n-magic
+              servicePort: http
