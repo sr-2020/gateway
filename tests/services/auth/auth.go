@@ -21,11 +21,10 @@ func NewServiceImpl(host string) *ServiceImpl {
 }
 
 func (a *ServiceImpl) Check() bool {
-	resp, _ := http.Get(fmt.Sprintf("%s/auth/version", a.host))
+	resp, _ := http.Get(fmt.Sprintf("%s/auth/login", a.host))
 	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
 
-	return string(body) == "2016"
+	return resp.StatusCode == http.StatusOK
 }
 
 func (a *ServiceImpl) Auth(data map[string]string) (domain.Token, int, error) {
