@@ -85,7 +85,7 @@ jobs:
           curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
           helm version
           helm plugin install https://github.com/zendesk/helm-secrets
-          helm secrets upgrade gateway-new helm/gateway/ --wait \
+          helm secrets upgrade gateway helm/gateway/ --wait \
             -f helm/gateway/values.yaml \
             -f helm/gateway/values/production/values.yaml \
             -f helm/gateway/values/production/secrets.yaml \
