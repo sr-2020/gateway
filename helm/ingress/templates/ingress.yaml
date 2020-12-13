@@ -16,7 +16,9 @@ spec:
         - models-manager.evarun.ru
         - position.evarun.ru
         - billing.evarun.ru
+        - rc-billing.evarun.ru
         - marketplace.evarun.ru
+        - marketplace-dashboard.evarun.ru
         - maps-n-magic.evarun.ru
       secretName: tls-secret3
   rules:
@@ -80,11 +82,23 @@ spec:
           - backend:
               serviceName: billing
               servicePort: http
+    - host: rc-billing.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: rc-billing
+              servicePort: http
     - host: marketplace.evarun.ru
       http:
         paths:
           - backend:
               serviceName: marketplace
+              servicePort: http
+    - host: marketplace-dashboard.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: marketplace-dashboard
               servicePort: http
     - host: maps-n-magic.evarun.ru
       http:
