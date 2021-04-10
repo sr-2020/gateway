@@ -11,6 +11,7 @@ spec:
         - web.evarun.ru
         - rc-web.evarun.ru
         - ppa.evarun.ru
+        - pgadmin.evarun.ru
         - push.evarun.ru
         - model-engine.evarun.ru
         - models-manager.evarun.ru
@@ -51,6 +52,12 @@ spec:
         paths:
           - backend:
               serviceName: ppa
+              servicePort: http
+    - host: pgadmin.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: pgadmin
               servicePort: http
     - host: push.evarun.ru
       http:
