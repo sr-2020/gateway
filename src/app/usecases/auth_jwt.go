@@ -46,6 +46,9 @@ func (j *Jwt) Execute(request JwtRequest) (JwtResponse, error) {
 		if modelId, ok := claims["modelId"].(float64); ok {
 			payload.ModelId = int(modelId)
 		}
+		if auth, ok := claims["auth"].(string); ok {
+			payload.Auth = auth
+		}
 	}
 
 	response.Payload = payload

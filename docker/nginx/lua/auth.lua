@@ -4,6 +4,13 @@ require "middleware";
 
 local path = "/__auth__"
 
+function authAdmin()
+    local res = ngx.location.capture(path)
+    if res.header["X-User-Auth"] ~= "ROLE_MASTER" then
+        ngx.exit(ngx.HTTP_FORBIDDEN)
+    end
+end
+
 function auth(query)
     if query == nil then
         query = ""

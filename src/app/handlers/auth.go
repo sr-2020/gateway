@@ -68,6 +68,7 @@ func (a Auth) Handler(c echo.Context) error {
 	}
 
 	c.Response().Header().Set("X-User-Id", strconv.Itoa(response.Payload.ModelId))
+	c.Response().Header().Set("X-User-Auth", response.Payload.Auth)
 
 	return c.JSON(http.StatusOK, struct {}{})
 }
