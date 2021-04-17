@@ -7,7 +7,7 @@ type BalanceResponse struct {
 }
 
 type Balance struct {
-	CharacterId       int
+	ModelId           int
 	SIN               string
 	CurrentBalance    float64
 	PersonName        string

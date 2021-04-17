@@ -29,7 +29,7 @@ func (a *ServiceImpl) Balance() (domain.BalanceResponse, error) {
 
 	client := http.Client{}
 	req, err := http.NewRequest("GET",
-		fmt.Sprintf("%s/billing/balance", a.host),
+		fmt.Sprintf("%s/billing/sin", a.host),
 		nil)
 	if err != nil {
 		return balanceResponse, err

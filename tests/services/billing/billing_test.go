@@ -28,7 +28,7 @@ func TestBalance(t *testing.T) {
 		balanceResponse, err := billingService.Balance()
 
 		convey.So(err, convey.ShouldEqual, nil)
-		convey.So(balanceResponse.Data.CharacterId, convey.ShouldEqual, 0)
+		convey.So(balanceResponse.Data.ModelId, convey.ShouldEqual, 0)
 	})
 
 	convey.Convey("Login with valid creds", t, func() {
@@ -41,7 +41,7 @@ func TestBalance(t *testing.T) {
 			balanceResponse, err := billingService.Balance()
 
 			convey.So(err, convey.ShouldEqual, nil)
-			convey.So(balanceResponse.Data.CharacterId, convey.ShouldEqual, cfg.ModelId)
+			convey.So(balanceResponse.Data.ModelId, convey.ShouldEqual, cfg.ModelId)
 		})
 	})
 }
