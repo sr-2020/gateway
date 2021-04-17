@@ -78,3 +78,31 @@ func TestSentEventRevive(t *testing.T) {
 		})
 	})
 }
+
+func TestQrModel(t *testing.T) {
+	cfg := config.LoadConfig()
+	authService := auth.NewServiceImpl(cfg.Host + "/api/v1")
+	modelId := 1
+
+	convey.Convey("Try to read qr model for unauthorized user", t, func() {
+		modelsManagerService := NewServiceImpl(cfg.Host+"/api/v1", "")
+
+		check := modelsManagerService.QrModel(modelId)
+
+		convey.So(check, convey.ShouldEqual, false)
+	})
+
+	convey.Convey("Login with valid creds for player", t, func() {
+		token, err := authService.AuthTest()
+		convey.So(err, convey.ShouldBeNil)
+
+		convey.Convey("Try to read qr model", func() {
+			cfg := config.LoadConfig()
+			modelsManagerService := NewServiceImpl(cfg.Host+"/api/v1", token.ApiKey)
+
+			check := modelsManagerService.QrModel(modelId)
+
+			convey.So(check, convey.ShouldEqual, false)
+		})
+	})
+}

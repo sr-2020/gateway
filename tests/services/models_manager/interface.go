@@ -6,4 +6,5 @@ type Service interface {
 	Check() bool
 	CharacterModel() (domain.CharacterModelResponse, error)
 	SentEvent(event domain.Event) (domain.CharacterModelResponse, error)
+	QrModel(int) error
 }

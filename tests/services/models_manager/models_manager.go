@@ -105,3 +105,10 @@ func (a *ServiceImpl) SentEvent(event domain.Event) (domain.CharacterModelRespon
 
 	return characterModelResponse, nil
 }
+
+func (a *ServiceImpl) QrModel(id int) bool {
+	resp, _ := http.Get(fmt.Sprintf("%s/models-manager/qr/model/%d", a.host, id))
+	defer resp.Body.Close()
+
+	return resp.StatusCode == http.StatusOK
+}
