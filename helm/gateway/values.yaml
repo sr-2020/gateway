@@ -15,6 +15,7 @@ app:
     modelsManager: "http://models-manager.production.svc.cluster.local"
     web: "http://web.production.svc.cluster.local"
     rcWeb: "http://rc-web.production.svc.cluster.local"
+    mapsNMagic: "http://maps-n-magic2.production.svc.cluster.local"
     redis: "redis.production.svc.cluster.local"
     secret: ""
 

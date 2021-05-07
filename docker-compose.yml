@@ -16,6 +16,7 @@ services:
       WEB_HOST: ${WEB_HOST}
       RC_WEB_HOST: ${RC_WEB_HOST}
       REDIS_HOST: ${REDIS_HOST}
+      MAPS_N_MAGIC_HOST: ${MAPS_N_MAGIC_HOST}
     links:
       - app
 

@@ -79,6 +79,11 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-configmap
                   key: redisHost
+            - name: MAPS_N_MAGIC_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-configmap
+                  key: mapsNMagicHost
 
         - name: gateway
           image: "{{ .Values.image.gateway.repository }}:{{ .Values.image.gateway.tag }}"
