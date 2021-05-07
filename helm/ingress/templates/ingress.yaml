@@ -21,6 +21,7 @@ spec:
         - marketplace.evarun.ru
         - marketplace-dashboard.evarun.ru
         - maps-n-magic.evarun.ru
+        - maps-n-magic2.evarun.ru
       secretName: tls-secret4
   rules:
     - host: gateway.evarun.ru
@@ -112,4 +113,10 @@ spec:
         paths:
           - backend:
               serviceName: maps-n-magic
+              servicePort: http
+    - host: maps-n-magic2.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: maps-n-magic2
               servicePort: http
