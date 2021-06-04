@@ -22,7 +22,7 @@ spec:
         - marketplace-dashboard.evarun.ru
         - maps-n-magic.evarun.ru
         - maps-n-magic2.evarun.ru
-      secretName: tls-secret4
+      secretName: tls-secret5
   rules:
     - host: gateway.evarun.ru
       http:
