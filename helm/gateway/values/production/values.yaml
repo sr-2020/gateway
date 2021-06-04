@@ -1,1 +1,4 @@
-
+app:
+  services:
+    billing: "http://billing.production.svc.cluster.local"
+    web: "http://web.production.svc.cluster.local"

@@ -1,3 +1,5 @@
 app:
   services:
+    billing: "http://rc-billing.production.svc.cluster.local"
+    web: "http://rc-web.production.svc.cluster.local"
     secret: "new-open"
