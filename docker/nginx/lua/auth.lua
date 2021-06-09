@@ -10,7 +10,11 @@ function authAdmin()
     end
 
     local res = ngx.location.capture(path)
-    if res.header["X-User-Auth"] ~= "ROLE_MASTER" then
+    if res.header["X-User-Auth"] == nil then
+        ngx.exit(ngx.HTTP_UNAUTHORIZED)
+    end
+
+    if string.find(res.header["X-User-Auth"], "ROLE_MASTER") == nil then
         ngx.exit(ngx.HTTP_FORBIDDEN)
     end
 end
