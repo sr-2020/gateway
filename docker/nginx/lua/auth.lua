@@ -5,6 +5,10 @@ require "middleware";
 local path = "/__auth__"
 
 function authAdmin()
+    if ngx.req.get_method() == "OPTIONS" then
+        return nil
+    end
+
     local res = ngx.location.capture(path)
     if res.header["X-User-Auth"] ~= "ROLE_MASTER" then
         ngx.exit(ngx.HTTP_FORBIDDEN)
