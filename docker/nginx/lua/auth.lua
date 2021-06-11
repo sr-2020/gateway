@@ -225,5 +225,5 @@ function addCorsHeaders()
     ngx.header["Access-Control-Allow-Origin"] = origin
     ngx.header["Access-Control-Allow-Methods"] = "POST,GET,OPTIONS,PUT,DELETE,HEAD,PATCH"
     ngx.header["Access-Control-Allow-Credentials"] = "true"
-    ngx.header["Access-Control-Allow-Headers"] = "Origin,X-Requested-With,Content-Type,Accept"
+    ngx.header["Access-Control-Allow-Headers"] = "Origin,X-Requested-With,Content-Type,Accept,Authorization"
 end
