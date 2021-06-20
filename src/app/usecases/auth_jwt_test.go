@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"github.com/dgrijalva/jwt-go"
+	"github.com/sr-2020/gateway/app/adapters/storage"
 	"github.com/sr-2020/gateway/app/domain"
 	"reflect"
 	"testing"
@@ -12,13 +13,12 @@ const (
 	jwtSecret = "test"
 )
 
-func jwtToken(id int, secret string) string {
+func jwtToken(id int, auth string, exp int64, secret string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, jwt.MapClaims{
-		"sub":         "37445",
-		"auth":        "ROLE_PLAYER",
+		"auth":        auth,
 		"modelId":     id,
 		"characterId": 64,
-		"exp":         time.Now().Add(1 * time.Minute).Unix(),
+		"exp":         exp,
 	})
 
 	tokenString, err := token.SignedString([]byte(secret))
@@ -30,6 +30,12 @@ func jwtToken(id int, secret string) string {
 }
 
 func TestJwt_Execute(t *testing.T) {
+	mockStorage := storage.NewMock()
+
+	exp := time.Now().Add(5 * time.Minute).Unix()
+	expPrev := time.Now().Add(1 * time.Minute).Unix()
+	expNext := time.Now().Add(10 * time.Minute).Unix()
+
 	type args struct {
 		request JwtRequest
 	}
@@ -43,18 +49,115 @@ func TestJwt_Execute(t *testing.T) {
 		{
 			name: "Success for 1",
 			jwt: &Jwt{
-				Secret: jwtSecret,
+				Secret:  jwtSecret,
+				Storage: mockStorage,
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(1, jwtSecret),
+					Token: jwtToken(1, domain.RolePlayer, exp, jwtSecret),
 				},
 			},
 			want: JwtResponse{
 				Payload: domain.Payload{
-					Sub:     "",
-					Auth:    "",
+					Auth:    domain.RolePlayer,
 					ModelId: 1,
+					Exp:     exp,
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "Success for 1 next",
+			jwt: &Jwt{
+				Secret:  jwtSecret,
+				Storage: mockStorage,
+			},
+			args: args{
+				request: JwtRequest{
+					Token: jwtToken(1, domain.RolePlayer, expNext, jwtSecret),
+				},
+			},
+			want: JwtResponse{
+				Payload: domain.Payload{
+					Auth:    domain.RolePlayer,
+					ModelId: 1,
+					Exp:     expNext,
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "Multi login error for 1 prev",
+			jwt: &Jwt{
+				Secret:  jwtSecret,
+				Storage: mockStorage,
+			},
+			args: args{
+				request: JwtRequest{
+					Token: jwtToken(1, domain.RolePlayer, expPrev, jwtSecret),
+				},
+			},
+			want: JwtResponse{
+				Payload: domain.Payload{},
+			},
+			wantErr: true,
+		},
+		{
+			name: "Success for 2",
+			jwt: &Jwt{
+				Secret:  jwtSecret,
+				Storage: mockStorage,
+			},
+			args: args{
+				request: JwtRequest{
+					Token: jwtToken(2, domain.RoleMaster, exp, jwtSecret),
+				},
+			},
+			want: JwtResponse{
+				Payload: domain.Payload{
+					Auth:    domain.RoleMaster,
+					ModelId: 2,
+					Exp:     exp,
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "Success for 2 next",
+			jwt: &Jwt{
+				Secret:  jwtSecret,
+				Storage: mockStorage,
+			},
+			args: args{
+				request: JwtRequest{
+					Token: jwtToken(2, domain.RoleMaster, expNext, jwtSecret),
+				},
+			},
+			want: JwtResponse{
+				Payload: domain.Payload{
+					Auth:    domain.RoleMaster,
+					ModelId: 2,
+					Exp:     expNext,
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "Success for 2 prev",
+			jwt: &Jwt{
+				Secret:  jwtSecret,
+				Storage: mockStorage,
+			},
+			args: args{
+				request: JwtRequest{
+					Token: jwtToken(2, domain.RoleMaster, expPrev, jwtSecret),
+				},
+			},
+			want: JwtResponse{
+				Payload: domain.Payload{
+					Auth:    domain.RoleMaster,
+					ModelId: 2,
+					Exp:     expPrev,
 				},
 			},
 			wantErr: false,
@@ -62,16 +165,16 @@ func TestJwt_Execute(t *testing.T) {
 		{
 			name: "Error secret",
 			jwt: &Jwt{
-				Secret: "test2",
+				Secret:  "test2",
+				Storage: mockStorage,
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(1, jwtSecret),
+					Token: jwtToken(1, domain.RolePlayer, exp, jwtSecret),
 				},
 			},
 			want: JwtResponse{
 				Payload: domain.Payload{
-					Sub:     "",
 					Auth:    "",
 					ModelId: 0,
 				},

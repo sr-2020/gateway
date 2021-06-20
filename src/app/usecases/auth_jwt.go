@@ -3,7 +3,9 @@ package usecases
 import (
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/sr-2020/gateway/app/adapters/storage"
 	"github.com/sr-2020/gateway/app/domain"
+	"strconv"
 )
 
 type JwtInterface interface {
@@ -19,7 +21,8 @@ type JwtResponse struct {
 }
 
 type Jwt struct {
-	Secret string
+	Secret  string
+	Storage storage.Storage
 }
 
 func (j *Jwt) Execute(request JwtRequest) (JwtResponse, error) {
@@ -48,6 +51,16 @@ func (j *Jwt) Execute(request JwtRequest) (JwtResponse, error) {
 		}
 		if auth, ok := claims["auth"].(string); ok {
 			payload.Auth = auth
+		}
+		if exp, ok := claims["exp"].(float64); ok {
+			payload.Exp = int64(exp)
+		}
+	}
+
+	if payload.Auth == domain.RolePlayer {
+		key := strconv.Itoa(payload.ModelId)
+		if !j.Storage.Check(key, payload.Exp) {
+			return response, domain.ErrMultiLogin
 		}
 	}
 

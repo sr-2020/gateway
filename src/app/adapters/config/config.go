@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"github.com/go-redis/redis/v8"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log"
@@ -15,6 +16,7 @@ type Config struct {
 	Auth      string
 	JwtSecret string
 	Services  map[string]Service
+	Redis     redis.Options
 }
 
 type Service struct {
@@ -39,6 +41,10 @@ func LoadConfig() Config {
 			Timeout: 1000,
 		}
 		cfg.JwtSecret = os.Getenv("JWT_SECRET")
+		cfg.Redis.Addr = os.Getenv("REDIS_HOST") + ":6379"
+		cfg.Redis.Password = ""
+		cfg.Redis.DB = 0
+
 		return cfg
 	}
 

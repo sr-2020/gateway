@@ -6,6 +6,7 @@ import (
 	"github.com/sr-2020/gateway/tests/domain"
 	"net/http"
 	"testing"
+	"time"
 )
 
 func TestCheck(t *testing.T) {
@@ -81,6 +82,7 @@ func TestLogin(t *testing.T) {
 		convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 
 		oldToken := token
+		time.Sleep(1 * time.Second)
 		convey.Convey("One more time login", func() {
 			token, statusCode, err := authService.Auth(map[string]string{
 				"login": cfg.Login,

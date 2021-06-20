@@ -1,9 +1,14 @@
 package domain
 
+const (
+	RolePlayer = "ROLE_PLAYER"
+	RoleMaster = "ROLE_MASTER"
+)
+
 type Payload struct {
-	Sub string
-	Auth string
+	Auth    string
 	ModelId int
+	Exp     int64
 }
 
 func (p Payload) Valid() error {

@@ -1,10 +1,12 @@
 package app
 
 import (
+	"github.com/go-redis/redis/v8"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sr-2020/gateway/app/adapters/config"
 	"github.com/sr-2020/gateway/app/adapters/services/position"
+	"github.com/sr-2020/gateway/app/adapters/storage"
 	"github.com/sr-2020/gateway/app/handlers"
 	"github.com/sr-2020/gateway/app/usecases"
 	"strconv"
@@ -28,8 +30,13 @@ func Start(cfg config.Config) error {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
+	redisStore := storage.NewRedis(redis.NewClient(&cfg.Redis))
+
 	authHandler := handlers.Auth{
-		UseCase: &usecases.Jwt{Secret: cfg.JwtSecret},
+		UseCase: &usecases.Jwt{
+			Secret: cfg.JwtSecret,
+			Storage: redisStore,
+		},
 		UseCaseData: &usecases.Data{
 			Position: position.NewService(cfg.Services["position"]),
 		},
