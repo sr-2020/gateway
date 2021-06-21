@@ -32,7 +32,7 @@ func (m Redis) Check(key string, exp int64) bool {
 	}
 
 	if int64(lastExpInt) <= exp {
-		newExp := strconv.Itoa(lastExpInt)
+		newExp := strconv.Itoa(int(exp))
 		m.client.Set(context.Background(), keyPrefix + key, newExp, 0)
 		return true
 	}
