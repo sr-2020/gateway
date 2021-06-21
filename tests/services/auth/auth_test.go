@@ -100,9 +100,8 @@ func TestLogin(t *testing.T) {
 			convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 
 			convey.Convey("Check auth with preview token", func() {
-				modelId, err := authService.ModelId(oldToken)
-				convey.So(err, convey.ShouldBeNil)
-				convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
+				modelId, _ := authService.ModelId(oldToken)
+				convey.So(modelId, convey.ShouldEqual, 0)
 			})
 		})
 	})
