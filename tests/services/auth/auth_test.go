@@ -81,7 +81,7 @@ func TestLogin(t *testing.T) {
 		convey.So(err, convey.ShouldBeNil)
 		convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 
-		//oldToken := token
+		oldToken := token
 		time.Sleep(1 * time.Second)
 		convey.Convey("One more time login", func() {
 			token, statusCode, err := authService.Auth(map[string]string{
@@ -99,10 +99,53 @@ func TestLogin(t *testing.T) {
 			convey.So(err, convey.ShouldBeNil)
 			convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
 
-			//convey.Convey("Check auth with preview token", func() {
-			//	modelId, _ := authService.ModelId(oldToken)
-			//	convey.So(modelId, convey.ShouldEqual, 0)
-			//})
+			convey.Convey("Check auth with preview token", func() {
+				modelId, _ := authService.ModelId(oldToken)
+				convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
+			})
+		})
+	})
+
+	convey.Convey("Login with valid creds with firebase_token", t, func() {
+		token, statusCode, err := authService.Auth(map[string]string{
+			"login": cfg.Login,
+			"password": cfg.Password,
+			"firebase_token": "test",
+		})
+
+		convey.So(err, convey.ShouldBeNil)
+		convey.So(statusCode, convey.ShouldEqual, http.StatusOK)
+
+		convey.So(token.Id, convey.ShouldEqual, cfg.ModelId)
+		convey.So(token.ApiKey, convey.ShouldNotEqual, "")
+
+		modelId, err := authService.ModelId(token)
+		convey.So(err, convey.ShouldBeNil)
+		convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
+
+		oldToken := token
+		time.Sleep(1 * time.Second)
+		convey.Convey("One more time login with firebase_token", func() {
+			token, statusCode, err := authService.Auth(map[string]string{
+				"login": cfg.Login,
+				"password": cfg.Password,
+				"firebase_token": "test",
+			})
+
+			convey.So(err, convey.ShouldBeNil)
+			convey.So(statusCode, convey.ShouldEqual, http.StatusOK)
+
+			convey.So(token.Id, convey.ShouldEqual, cfg.ModelId)
+			convey.So(token.ApiKey, convey.ShouldNotEqual, "")
+
+			modelId, err := authService.ModelId(token)
+			convey.So(err, convey.ShouldBeNil)
+			convey.So(modelId, convey.ShouldEqual, cfg.ModelId)
+
+			convey.Convey("Check auth with preview token - multi login error", func() {
+				modelId, _ := authService.ModelId(oldToken)
+				convey.So(modelId, convey.ShouldEqual, 0)
+			})
 		})
 	})
 }

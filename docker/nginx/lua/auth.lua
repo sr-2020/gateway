@@ -102,6 +102,23 @@ function authLogin()
                 body = cjson.encode(pushToken) })
 
             ngx.log(ngx.INFO, "push:" .. pushRes.status)
+
+            local redis = require "resty.redis"
+            local red = redis:new()
+            red:set_timeout(1000)
+
+            local redisHost = os.getenv("REDIS_HOST")
+            local ok, err = red:connect(redisHost, 6379)
+            if not ok then
+                ngx.print("failed connect: ", err)
+                return
+            end
+
+            local ok, err = red:lpush("tokens::" .. res["modelId"], res["token"])
+            if not ok then
+                ngx.print("failed to lpush token: ", err)
+                return
+            end
         end
 
         for k, v in pairs(webRes.header) do

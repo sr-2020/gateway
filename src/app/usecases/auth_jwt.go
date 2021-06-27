@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/sr-2020/gateway/app/adapters/storage"
 	"github.com/sr-2020/gateway/app/domain"
+	"strconv"
 )
 
 type JwtInterface interface {
@@ -56,12 +57,12 @@ func (j *Jwt) Execute(request JwtRequest) (JwtResponse, error) {
 		}
 	}
 
-	//if payload.Auth == domain.RolePlayer {
-	//	key := strconv.Itoa(payload.ModelId)
-	//	if !j.Storage.Check(key, payload.Exp) {
-	//		return response, domain.ErrMultiLogin
-	//	}
-	//}
+	if payload.Auth == domain.RolePlayer {
+		key := strconv.Itoa(payload.ModelId)
+		if !j.Storage.Check(key, request.Token) {
+			return response, domain.ErrMultiLogin
+		}
+	}
 
 	response.Payload = payload
 

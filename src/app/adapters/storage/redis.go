@@ -3,11 +3,10 @@ package storage
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
-	"strconv"
 )
 
 const (
-	keyPrefix = "auth::"
+	keyPrefix = "tokens::"
 )
 
 type Redis struct {
@@ -18,24 +17,32 @@ func NewRedis(client *redis.Client) *Redis {
 	return &Redis{client}
 }
 
-func (m Redis) Check(key string, exp int64) bool {
-	lastExp, err := m.client.Get(context.Background(), keyPrefix + key).Result()
-	if err != nil {
-		newExp := strconv.Itoa(int(exp))
-		m.client.Set(context.Background(), keyPrefix + key, newExp, 0)
-		return true
-	}
+func (m Redis) Check(key string, token string) bool {
+	keyStore := keyPrefix + key
 
-	lastExpInt, err := strconv.Atoi(lastExp)
+	countTokens, err := m.client.LLen(context.Background(), keyStore).Result()
 	if err != nil {
 		return true
 	}
 
-	if int64(lastExpInt) <= exp {
-		newExp := strconv.Itoa(int(exp))
-		m.client.Set(context.Background(), keyPrefix + key, newExp, 0)
+	if countTokens == 0 {
 		return true
 	}
 
-	return false
+	tokens, err := m.client.LRange(context.Background(), keyStore, 0, countTokens).Result()
+	if err != nil {
+		return true
+	}
+
+	if tokens[0] == token {
+		return true
+	} else {
+		for _, v := range tokens {
+			if v == token {
+				return false
+			}
+		}
+	}
+
+	return true
 }

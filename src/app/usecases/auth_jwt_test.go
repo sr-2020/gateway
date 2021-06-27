@@ -30,11 +30,17 @@ func jwtToken(id int, auth string, exp int64, secret string) string {
 }
 
 func TestJwt_Execute(t *testing.T) {
-	mockStorage := storage.NewMock()
+	expOld := time.Now().Add(5 * time.Minute).Unix()
+	expNew := time.Now().Add(10 * time.Minute).Unix()
+	jwtPlayerOld := jwtToken(1, domain.RolePlayer, expOld, jwtSecret)
+	jwtPlayerNew := jwtToken(1, domain.RolePlayer, expNew, jwtSecret)
+	jwtMasterOld := jwtToken(2, domain.RoleMaster, expOld, jwtSecret)
+	jwtMasterNew := jwtToken(2, domain.RoleMaster, expNew, jwtSecret)
 
-	exp := time.Now().Add(5 * time.Minute).Unix()
-	expPrev := time.Now().Add(1 * time.Minute).Unix()
-	expNext := time.Now().Add(10 * time.Minute).Unix()
+	mockStorage := storage.NewMock(map[string][]string{
+		"1": { jwtPlayerOld, jwtPlayerNew},
+		"2": { jwtMasterOld, jwtMasterNew},
+	})
 
 	type args struct {
 		request JwtRequest
@@ -47,54 +53,14 @@ func TestJwt_Execute(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "Success for 1",
+			name: "Error for player old token",
 			jwt: &Jwt{
 				Secret:  jwtSecret,
 				Storage: mockStorage,
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(1, domain.RolePlayer, exp, jwtSecret),
-				},
-			},
-			want: JwtResponse{
-				Payload: domain.Payload{
-					Auth:    domain.RolePlayer,
-					ModelId: 1,
-					Exp:     exp,
-				},
-			},
-			wantErr: false,
-		},
-		{
-			name: "Success for 1 next",
-			jwt: &Jwt{
-				Secret:  jwtSecret,
-				Storage: mockStorage,
-			},
-			args: args{
-				request: JwtRequest{
-					Token: jwtToken(1, domain.RolePlayer, expNext, jwtSecret),
-				},
-			},
-			want: JwtResponse{
-				Payload: domain.Payload{
-					Auth:    domain.RolePlayer,
-					ModelId: 1,
-					Exp:     expNext,
-				},
-			},
-			wantErr: false,
-		},
-		{
-			name: "Multi login error for 1 prev",
-			jwt: &Jwt{
-				Secret:  jwtSecret,
-				Storage: mockStorage,
-			},
-			args: args{
-				request: JwtRequest{
-					Token: jwtToken(1, domain.RolePlayer, expPrev, jwtSecret),
+					Token: jwtPlayerOld,
 				},
 			},
 			want: JwtResponse{
@@ -103,61 +69,61 @@ func TestJwt_Execute(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "Success for 2",
+			name: "Success for player new token",
 			jwt: &Jwt{
 				Secret:  jwtSecret,
 				Storage: mockStorage,
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(2, domain.RoleMaster, exp, jwtSecret),
+					Token: jwtPlayerNew,
 				},
 			},
 			want: JwtResponse{
 				Payload: domain.Payload{
-					Auth:    domain.RoleMaster,
-					ModelId: 2,
-					Exp:     exp,
+					Auth:    domain.RolePlayer,
+					ModelId: 1,
+					Exp:     expNew,
 				},
 			},
 			wantErr: false,
 		},
 		{
-			name: "Success for 2 next",
+			name: "Success for master old token",
 			jwt: &Jwt{
 				Secret:  jwtSecret,
 				Storage: mockStorage,
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(2, domain.RoleMaster, expNext, jwtSecret),
+					Token: jwtMasterOld,
 				},
 			},
 			want: JwtResponse{
 				Payload: domain.Payload{
 					Auth:    domain.RoleMaster,
 					ModelId: 2,
-					Exp:     expNext,
+					Exp:     expOld,
 				},
 			},
 			wantErr: false,
 		},
 		{
-			name: "Success for 2 prev",
+			name: "Success for master new token",
 			jwt: &Jwt{
 				Secret:  jwtSecret,
 				Storage: mockStorage,
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(2, domain.RoleMaster, expPrev, jwtSecret),
+					Token: jwtMasterNew,
 				},
 			},
 			want: JwtResponse{
 				Payload: domain.Payload{
 					Auth:    domain.RoleMaster,
 					ModelId: 2,
-					Exp:     expPrev,
+					Exp:     expNew,
 				},
 			},
 			wantErr: false,
@@ -170,7 +136,7 @@ func TestJwt_Execute(t *testing.T) {
 			},
 			args: args{
 				request: JwtRequest{
-					Token: jwtToken(1, domain.RolePlayer, exp, jwtSecret),
+					Token: jwtPlayerOld,
 				},
 			},
 			want: JwtResponse{

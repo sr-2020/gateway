@@ -1,26 +1,24 @@
 package storage
 
 type Mock struct {
-	data map[string]int64
+	data map[string][]string
 }
 
-func NewMock() *Mock {
-	data := make(map[string]int64)
+func NewMock(data map[string][]string) *Mock {
 	return &Mock{
 		data: data,
 	}
 }
 
-func (m Mock) Check(key string, exp int64) bool {
+func (m Mock) Check(key string, token string) bool {
 	if v, ok := m.data[key]; ok {
-		if v <= exp {
-			m.data[key] = exp
-			return true
+		length := len(v)
+		for i, v := range v {
+			if v == token {
+				return i == length - 1
+			}
 		}
-
-		return false
 	}
 
-	m.data[key] = exp
 	return true
 }
