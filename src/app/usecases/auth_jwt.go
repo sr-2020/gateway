@@ -57,11 +57,9 @@ func (j *Jwt) Execute(request JwtRequest) (JwtResponse, error) {
 		}
 	}
 
-	if payload.Auth == domain.RolePlayer {
-		key := strconv.Itoa(payload.ModelId)
-		if !j.Storage.Check(key, request.Token) {
-			return response, domain.ErrMultiLogin
-		}
+	key := strconv.Itoa(payload.ModelId)
+	if !j.Storage.Check(key, request.Token) {
+		return response, domain.ErrMultiLogin
 	}
 
 	response.Payload = payload

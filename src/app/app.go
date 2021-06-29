@@ -38,7 +38,7 @@ func Start(cfg config.Config) error {
 			Storage: redisStore,
 		},
 		UseCaseData: &usecases.Data{
-			Position: position.NewService(cfg.Services["position"]),
+			Position: position.NewService(cfg.Services["position"], redisStore),
 		},
 	}
 

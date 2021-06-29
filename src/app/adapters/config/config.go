@@ -22,6 +22,7 @@ type Config struct {
 type Service struct {
 	Host    string
 	Timeout time.Duration
+	Cache   time.Duration
 }
 
 func LoadConfig() Config {
@@ -38,7 +39,8 @@ func LoadConfig() Config {
 		cfg.Services = make(map[string]Service)
 		cfg.Services["position"] = Service{
 			Host: os.Getenv("POSITION_HOST"),
-			Timeout: 1000,
+			Timeout: 3 * time.Second,
+			Cache: 0,
 		}
 		cfg.JwtSecret = os.Getenv("JWT_SECRET")
 		cfg.Redis.Addr = os.Getenv("REDIS_HOST") + ":6379"

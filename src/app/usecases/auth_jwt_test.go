@@ -89,7 +89,7 @@ func TestJwt_Execute(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "Success for master old token",
+			name: "Error for master old token",
 			jwt: &Jwt{
 				Secret:  jwtSecret,
 				Storage: mockStorage,
@@ -100,13 +100,9 @@ func TestJwt_Execute(t *testing.T) {
 				},
 			},
 			want: JwtResponse{
-				Payload: domain.Payload{
-					Auth:    domain.RoleMaster,
-					ModelId: 2,
-					Exp:     expOld,
-				},
+				Payload: domain.Payload{},
 			},
-			wantErr: false,
+			wantErr: true,
 		},
 		{
 			name: "Success for master new token",

@@ -5,28 +5,41 @@ import (
 	"errors"
 	"fmt"
 	"github.com/sr-2020/gateway/app/adapters/config"
+	"github.com/sr-2020/gateway/app/adapters/storage"
 	"github.com/sr-2020/gateway/app/domain"
 	"github.com/valyala/fasthttp"
-	"time"
+	"strconv"
 )
 
 type Service struct {
 	Config config.Service
 	Client fasthttp.Client
+	Store  storage.Storage
 }
 
-func NewService(config config.Service) *Service {
+func NewService(config config.Service, store storage.Storage) *Service {
 
 	client := fasthttp.Client{
-		ReadTimeout: config.Timeout * time.Millisecond,
-		WriteTimeout: config.Timeout * time.Millisecond,
+		ReadTimeout: config.Timeout,
+		WriteTimeout: config.Timeout,
 	}
 
-	return &Service{config, client}
+	return &Service{config, client, store}
 }
 
 func (s *Service) Location(id int) (domain.Location, error) {
 	var location domain.Location
+
+	positionCachePrefix := "position::"
+	cacheKey := positionCachePrefix + strconv.Itoa(id)
+	if s.Config.Cache != 0 {
+		cacheLocation, err := s.Store.ReadCache(cacheKey)
+		if err == nil {
+			if err := json.Unmarshal([]byte(cacheLocation), &location); err == nil {
+				return location, nil
+			}
+		}
+	}
 
 	req := fasthttp.AcquireRequest()
 	resp := fasthttp.AcquireResponse()
@@ -60,6 +73,17 @@ func (s *Service) Location(id int) (domain.Location, error) {
 			if v, ok := v.(float64); ok {
 				location.ManaLevel = int(v)
 			}
+		}
+	}
+
+	if s.Config.Cache != 0 {
+		cacheValue, err := json.Marshal(location)
+		if err != nil {
+			// do nothing
+		}
+
+		if err := s.Store.WriteCache(cacheKey, cacheValue, s.Config.Cache); err != nil {
+			// do nothing
 		}
 	}
 

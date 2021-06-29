@@ -1,5 +1,7 @@
 package storage
 
+import "time"
+
 type Mock struct {
 	data map[string][]string
 }
@@ -21,4 +23,14 @@ func (m Mock) Check(key string, token string) bool {
 	}
 
 	return true
+}
+
+func (m Mock) ReadCache(key string) (string, error) {
+
+	return key, nil
+}
+
+func (m Mock) WriteCache(key string, val interface{}, exp time.Duration) error {
+
+	return nil
 }
