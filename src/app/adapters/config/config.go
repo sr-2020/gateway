@@ -34,13 +34,15 @@ func LoadConfig() Config {
 	data, err := ioutil.ReadFile(*configPath)
 	if err != nil {
 		port, _ := strconv.Atoi(os.Getenv("APP_PORT"))
+		positionCache, _ := strconv.Atoi(os.Getenv("POSITION_CACHE"))
+
 		cfg.Port = port
 		cfg.Auth = os.Getenv("AUTH_HOST")
 		cfg.Services = make(map[string]Service)
 		cfg.Services["position"] = Service{
 			Host: os.Getenv("POSITION_HOST"),
 			Timeout: 3 * time.Second,
-			Cache: 0,
+			Cache: time.Duration(positionCache) * time.Second,
 		}
 		cfg.JwtSecret = os.Getenv("JWT_SECRET")
 		cfg.Redis.Addr = os.Getenv("REDIS_HOST") + ":6379"

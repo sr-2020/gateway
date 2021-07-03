@@ -136,6 +136,11 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-configmap
                   key: redisHost
+            - name: POSITION_CACHE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-configmap
+                  key: positionCache
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:

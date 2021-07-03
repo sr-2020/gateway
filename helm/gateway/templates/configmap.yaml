@@ -15,3 +15,4 @@ data:
   redisHost: {{ .Values.app.services.redis | quote }}
   mapsNMagicHost: {{ .Values.app.services.mapsNMagic | quote }}
   secret: {{ .Values.app.services.secret | quote }}
+  positionCache: {{ .Values.app.positionCache | quote }}

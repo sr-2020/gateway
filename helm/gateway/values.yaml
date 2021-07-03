@@ -18,6 +18,7 @@ app:
     mapsNMagic: "http://maps-n-magic2.production.svc.cluster.local"
     redis: "redis.production.svc.cluster.local"
     secret: ""
+  positionCache: 300
 
 image:
   gatewayOld:
