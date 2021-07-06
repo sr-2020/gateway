@@ -20,8 +20,8 @@ spec:
         - rc-billing.evarun.ru
         - marketplace.evarun.ru
         - marketplace-dashboard.evarun.ru
-        - maps-n-magic.evarun.ru
         - maps-n-magic2.evarun.ru
+        - magic.evarun.ru
       secretName: tls-secret5
   rules:
     - host: gateway.evarun.ru
@@ -108,15 +108,15 @@ spec:
           - backend:
               serviceName: marketplace-dashboard
               servicePort: http
-    - host: maps-n-magic.evarun.ru
-      http:
-        paths:
-          - backend:
-              serviceName: maps-n-magic
-              servicePort: http
     - host: maps-n-magic2.evarun.ru
       http:
         paths:
           - backend:
               serviceName: maps-n-magic2
+              servicePort: http
+    - host: magic.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: magic
               servicePort: http
