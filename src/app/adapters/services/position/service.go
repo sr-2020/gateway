@@ -76,6 +76,11 @@ func (s *Service) Location(id int) (domain.Location, error) {
 		}
 	}
 
+	// TODO: Temp fix
+	if location.ManaLevel == 0 {
+		location.ManaLevel = 3
+	}
+
 	if s.Config.Cache != 0 {
 		cacheValue, err := json.Marshal(location)
 		if err != nil {
