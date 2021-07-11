@@ -26,7 +26,7 @@ func (a Profile) Handler(c echo.Context) error {
 	userIdHeader := c.Request().Header.Get("X-User-Id")
 	if userIdHeader == "" {
 		return c.JSON(http.StatusUnauthorized, map[string]string{
-			"error": "Empty auth header",
+			"error": "Invalid token header",
 		})
 	}
 
@@ -52,12 +52,21 @@ func (a Profile) Handler(c echo.Context) error {
 			})
 		}
 
-		res = append(res, PositionUser{
-			Id: userId,
-			Location: PositionLocation{
+		location := PositionLocation{
+			Id: 0,
+			Label: "Неизвестно где",
+		}
+
+		if responseData.Location.Id > 0 {
+			location = PositionLocation{
 				Id: responseData.Location.Id,
 				Label: responseData.Location.Label,
-			},
+			}
+		}
+
+		res = append(res, PositionUser{
+			Id: userId,
+			Location: location,
 		})
 
 		return c.JSON(http.StatusOK, res)
