@@ -25,5 +25,4 @@ Create secret for Ingress
 
 ```
 kubectl create secret tls tls-secret --key=privkey.pem --cert=fullchain.pem
-
 ```

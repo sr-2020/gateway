@@ -42,8 +42,19 @@ func Start(cfg config.Config) error {
 		},
 	}
 
+	profileHandler := handlers.Profile{
+		UseCase: &usecases.Jwt{
+			Secret: cfg.JwtSecret,
+			Storage: redisStore,
+		},
+		UseCaseData: &usecases.Data{
+			Position: position.NewService(cfg.Services["position"], redisStore),
+		},
+	}
+
 	// Routes
 	e.GET("/auth", authHandler.Handler)
+	e.GET("/profile", profileHandler.Handler)
 	DebugRoute(e)
 
 	// Start server

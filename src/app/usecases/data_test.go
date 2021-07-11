@@ -10,9 +10,7 @@ import (
 )
 
 func TestData_Execute(t *testing.T) {
-	//cfg := config.LoadConfig()
 
-	//positionService := position.NewService(cfg.Services["position"])
 	positionService := new(position.MockService)
 
 	type fields struct {
@@ -35,6 +33,7 @@ func TestData_Execute(t *testing.T) {
 				Return(domain.Location{
 					Id:        1,
 					ManaLevel: 0,
+					Label:     "Room#1",
 				}, nil),
 			fields: fields{
 				Position: positionService,
@@ -47,10 +46,15 @@ func TestData_Execute(t *testing.T) {
 			},
 			want: DataResponse{
 				Data: map[string]interface{}{
-					"position": domain.Location{
+					"position": domain.LocationWithoutLabel{
 						Id:        1,
 						ManaLevel: 0,
 					},
+				},
+				Location: domain.Location{
+					Id:        1,
+					ManaLevel: 0,
+					Label:     "Room#1",
 				},
 			},
 			wantErr: false,
@@ -61,6 +65,7 @@ func TestData_Execute(t *testing.T) {
 				Return(domain.Location{
 					Id:        2,
 					ManaLevel: 100,
+				    Label:     "Room#2",
 				}, nil),
 			fields: fields{
 				Position: positionService,
@@ -73,10 +78,15 @@ func TestData_Execute(t *testing.T) {
 			},
 			want: DataResponse{
 				Data: map[string]interface{}{
-					"position": domain.Location{
+					"position": domain.LocationWithoutLabel{
 						Id:        2,
 						ManaLevel: 100,
 					},
+				},
+				Location: domain.Location{
+					Id:        2,
+					ManaLevel: 100,
+					Label:     "Room#2",
 				},
 			},
 			wantErr: false,
@@ -99,11 +109,12 @@ func TestData_Execute(t *testing.T) {
 			},
 			want: DataResponse{
 				Data: map[string]interface{}{
-					"position": domain.Location{
+					"position": domain.LocationWithoutLabel{
 						Id:        0,
 						ManaLevel: 0,
 					},
 				},
+				Location: domain.Location{},
 			},
 			wantErr: false,
 		},

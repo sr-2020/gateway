@@ -1,12 +1,14 @@
 tests/loadtest/yandex-tank/.token
 tests/loadtest/yandex-tank/logs/
 tests/loadtest/yandex-tank/*.log
+tests/loadtest/yandex-tank/ammo/
 tests/usecases/screenshots/*.*
 tests/usecases/.ms-playwright
 tests/tests/_output/*
 tests/tests/_support/_generated/*
 src/.env
 src/go_build_gateway
+src/gateway-cli
 .env
 .idea/
 src/config.yaml

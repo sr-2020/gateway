@@ -15,7 +15,8 @@ type DataRequest struct {
 }
 
 type DataResponse struct {
-	Data map[string]interface{}
+	Data     map[string]interface{}
+	Location domain.Location
 }
 
 type Data struct {
@@ -38,7 +39,8 @@ func (d *Data) Execute(request DataRequest) (DataResponse, error) {
 		}
 	}
 
-	response.Data["position"] = location
+	response.Data["position"] = (domain.LocationWithoutLabel{}).Apply(location)
+	response.Location = location
 
 	return response, nil
 }

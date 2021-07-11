@@ -26,12 +26,16 @@ type Service struct {
 }
 
 func LoadConfig() Config {
-	var cfg Config
-
 	configPath := flag.String("config", "./config.yaml", "a string")
 	flag.Parse()
 
-	data, err := ioutil.ReadFile(*configPath)
+	return LoadConfigFromFile(*configPath)
+}
+
+func LoadConfigFromFile(filename string) Config {
+	var cfg Config
+
+	data, err := ioutil.ReadFile(filename)
 	if err != nil {
 		port, _ := strconv.Atoi(os.Getenv("APP_PORT"))
 		positionCache, _ := strconv.Atoi(os.Getenv("POSITION_CACHE"))

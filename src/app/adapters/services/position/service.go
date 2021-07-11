@@ -69,6 +69,7 @@ func (s *Service) Location(id int) (domain.Location, error) {
 
 	if positionUser.Location != nil && positionUser.Location.Id != 0 {
 		location.Id = positionUser.Location.Id
+		location.Label = positionUser.Location.Label
 		if v, ok := positionUser.Location.Options["manaLevel"]; ok {
 			if v, ok := v.(float64); ok {
 				location.ManaLevel = int(v)
