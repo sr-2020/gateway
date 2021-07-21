@@ -8,13 +8,12 @@ spec:
   tls:
     - hosts:
         - gateway.evarun.ru
+        - rc-gateway.evarun.ru
         - web.evarun.ru
         - rc-web.evarun.ru
-        - ppa.evarun.ru
         - pgadmin.evarun.ru
         - push.evarun.ru
         - model-engine.evarun.ru
-        - models-manager.evarun.ru
         - position.evarun.ru
         - billing.evarun.ru
         - rc-billing.evarun.ru
@@ -22,6 +21,7 @@ spec:
         - marketplace-dashboard.evarun.ru
         - maps-n-magic2.evarun.ru
         - magic.evarun.ru
+        - grafana.evarun.ru
       secretName: tls-secret5
   rules:
     - host: gateway.evarun.ru
@@ -72,12 +72,6 @@ spec:
           - backend:
               serviceName: model-engine
               servicePort: http
-    - host: models-manager.evarun.ru
-      http:
-        paths:
-          - backend:
-              serviceName: models-manager
-              servicePort: http
     - host: position.evarun.ru
       http:
         paths:
@@ -119,4 +113,10 @@ spec:
         paths:
           - backend:
               serviceName: magic
+              servicePort: http
+    - host: grafana.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: grafana
               servicePort: http
