@@ -112,3 +112,10 @@ func (a *ServiceImpl) QrModel(id int) bool {
 
 	return resp.StatusCode == http.StatusOK
 }
+
+func (a *ServiceImpl) LocationModel(id int) bool {
+	resp, _ := http.Get(fmt.Sprintf("%s/models-manager/location/model/%d", a.host, id))
+	defer resp.Body.Close()
+
+	return resp.StatusCode == http.StatusOK
+}

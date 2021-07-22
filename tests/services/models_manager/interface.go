@@ -7,4 +7,5 @@ type Service interface {
 	CharacterModel() (domain.CharacterModelResponse, error)
 	SentEvent(event domain.Event) (domain.CharacterModelResponse, error)
 	QrModel(int) error
+	LocationModel(int) error
 }
