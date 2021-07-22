@@ -8,6 +8,7 @@ data:
   positionHost: {{ .Values.app.services.position | quote }}
   pushHost: {{ .Values.app.services.push | quote }}
   billingHost: {{ .Values.app.services.billing | quote }}
+  billingReplicaHost: {{ .Values.app.services.billingReplica | quote }}
   modelEngineHost: {{ .Values.app.services.modelEngine | quote }}
   modelsManagerHost: {{ .Values.app.services.modelsManager | quote }}
   webHost: {{ .Values.app.services.web | quote }}

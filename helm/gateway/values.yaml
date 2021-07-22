@@ -11,6 +11,7 @@ app:
     position: "http://position.production.svc.cluster.local"
     push: "http://push.production.svc.cluster.local"
     billing: "http://rc-billing.production.svc.cluster.local"
+    billingReplica: "http://rc-billing.production.svc.cluster.local"
     modelEngine: "http://model-engine.production.svc.cluster.local"
     modelsManager: "http://models-manager.production.svc.cluster.local"
     web: "http://web.production.svc.cluster.local"

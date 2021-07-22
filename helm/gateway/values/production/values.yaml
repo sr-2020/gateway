@@ -1,4 +1,5 @@
 app:
   services:
     billing: "http://billing.production.svc.cluster.local"
+    billingReplica: "http://billing-replica.production.svc.cluster.local"
     web: "http://web.production.svc.cluster.local"

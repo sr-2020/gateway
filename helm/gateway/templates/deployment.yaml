@@ -44,6 +44,11 @@ spec:
                 configMapKeyRef:
                   name: {{ .Release.Name }}-configmap
                   key: billingHost
+            - name: BILLING_REPLICA_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Release.Name }}-configmap
+                  key: billingReplicaHost
             - name: POSITION_HOST
               valueFrom:
                 configMapKeyRef:
