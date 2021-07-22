@@ -14,9 +14,8 @@ spec:
         - pgadmin.evarun.ru
         - push.evarun.ru
         - model-engine.evarun.ru
+        - models-manager.evarun.ru
         - position.evarun.ru
-        - billing.evarun.ru
-        - rc-billing.evarun.ru
         - marketplace.evarun.ru
         - marketplace-dashboard.evarun.ru
         - maps-n-magic2.evarun.ru
@@ -48,12 +47,6 @@ spec:
           - backend:
               serviceName: rc-web
               servicePort: http
-    - host: ppa.evarun.ru
-      http:
-        paths:
-          - backend:
-              serviceName: ppa
-              servicePort: http
     - host: pgadmin.evarun.ru
       http:
         paths:
@@ -72,23 +65,17 @@ spec:
           - backend:
               serviceName: model-engine
               servicePort: http
+    - host: models-manager.evarun.ru
+      http:
+        paths:
+          - backend:
+              serviceName: models-manager
+              servicePort: http
     - host: position.evarun.ru
       http:
         paths:
           - backend:
               serviceName: position
-              servicePort: http
-    - host: billing.evarun.ru
-      http:
-        paths:
-          - backend:
-              serviceName: billing
-              servicePort: http
-    - host: rc-billing.evarun.ru
-      http:
-        paths:
-          - backend:
-              serviceName: rc-billing
               servicePort: http
     - host: marketplace.evarun.ru
       http:
