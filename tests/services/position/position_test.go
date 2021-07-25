@@ -49,7 +49,7 @@ func TestAddPosition(t *testing.T) {
 
 			convey.So(err, convey.ShouldEqual, nil)
 			convey.So(position.UserId, convey.ShouldEqual, cfg.ModelId)
-			convey.So(position.LocationId, convey.ShouldEqual, 3062)
+			convey.So(position.LocationId, convey.ShouldEqual, 3364)
 
 			convey.Convey("Add position for 3080 location", func() {
 				beacons := []domain.Beacon{
