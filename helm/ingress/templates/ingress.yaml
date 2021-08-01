@@ -14,7 +14,6 @@ spec:
         - pgadmin.evarun.ru
         - push.evarun.ru
         - model-engine.evarun.ru
-        - position.evarun.ru
         - marketplace.evarun.ru
         - marketplace-dashboard.evarun.ru
         - maps-n-magic2.evarun.ru
@@ -63,12 +62,6 @@ spec:
         paths:
           - backend:
               serviceName: model-engine
-              servicePort: http
-    - host: position.evarun.ru
-      http:
-        paths:
-          - backend:
-              serviceName: position
               servicePort: http
     - host: marketplace.evarun.ru
       http:
